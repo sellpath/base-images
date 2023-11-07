@@ -18,6 +18,7 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
+  TAG_NAME: ""
 
 
 jobs:
@@ -59,13 +60,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Set TAG_NAME
+        id: tag_name
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "::set-output name=tag::${{ github.ref#refs/tags/ }}"
+          else
+            echo "::set-output name=tag::$(echo "${{ github.sha }}" | cut -c1-8)"
+          fi
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -75,25 +77,10 @@ jobs:
         with:
           context: ./run_stage
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "ghcr.io/sellpath/python_run_stage:${{ github.sha }}"
+          tags: "ghcr.io/sellpath/python_run_stage:${ TAG_NAME }"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      # # Sign the resulting Docker image digest except on PRs.
-      # # This will only write to the public Rekor transparency log when the Docker
-      # # repository is public to avoid leaking data.  If you would like to publish
-      # # transparency data even for private images, pass --force to cosign below.
-      # # https://github.com/sigstore/cosign
-      # - name: Sign the published Docker image
-      #   if: ${{ github.event_name != 'pull_request' }}
-      #   env:
-      #     # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
-      #     TAGS: ${{ steps.meta.outputs.tags }}
-      #     DIGEST: ${{ steps.build-and-push.outputs.digest }}
-      #   # This step uses the identity token to provision an ephemeral certificate
-      #   # against the sigstore community Fulcio instance.
-      #   run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
       - name: build_stage.Dockerfile- Build and push Docker image 
         id: build-and-push-build_stage
@@ -101,7 +88,7 @@ jobs:
         with:
           context: build_stage/
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "ghcr.io/sellpath/python_build_stage:${{ github.sha }}"
+          tags: "ghcr.io/sellpath/python_build_stage:${ TAG_NAME }"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -112,7 +99,7 @@ jobs:
         with:
           context: ./prompteng_run_stage
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "ghcr.io/sellpath/prompteng_run_stage:${{ github.sha }}"
+          tags: "ghcr.io/sellpath/prompteng_run_stage:${ TAG_NAME }"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
