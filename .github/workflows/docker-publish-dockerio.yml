@@ -105,3 +105,15 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
   
+      - name: ui_run_stage.Dockerfile- Build and push Docker image 
+        id: build-and-push-ui_run_stage
+        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+        with:
+          context: ./ui_run_stage
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/ui_run_stage:${{ steps.tag_name.outputs.tag }}"
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+

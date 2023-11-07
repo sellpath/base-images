@@ -1,0 +1,19 @@
+FROM  node:18.18.2
+
+# disable ipv6
+COPY workaround-disable-ipv6.txt ./
+RUN cat workaround-disable-ipv6.txt >> /etc/sysctl.d/local.conf
+
+# Create the directory on the node image
+# where our Next.js app will live
+RUN mkdir -p /app
+
+# Set /app as the working directory in container
+WORKDIR /app
+# to the /app working directory
+COPY package.json ./
+
+RUN yarn set version berry
+
+# Install dependencies in /app
+RUN yarn install
