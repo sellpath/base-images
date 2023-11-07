@@ -119,7 +119,7 @@ jobs:
         id: build-and-push-ui_run_stage_arm64
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
-          context: ./ui_run_stage_arm64
+          context: ./ui_run_stage_arm64v8
           push: ${{ github.event_name != 'pull_request' }}
           tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/ui_run_stage_arm64v8:${{ steps.tag_name.outputs.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
