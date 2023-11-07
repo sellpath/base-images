@@ -75,7 +75,7 @@ jobs:
         with:
           context: ./run_stage
           push: ${{ github.event_name != 'pull_request' }}
-          tags: run_stage:${{ steps.meta.outputs.tags }}
+          tags: "ghcr.io/sellpath/python_run_stage:${{ github.sha }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -101,7 +101,7 @@ jobs:
         with:
           context: build_stage/
           push: ${{ github.event_name != 'pull_request' }}
-          tags: python_build_stage:${{ steps.meta.outputs.tags }}
+          tags: "ghcr.io/sellpath/python_build_stage:${{ github.sha }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -112,7 +112,7 @@ jobs:
         with:
           context: ./prompteng_run_stage
           push: ${{ github.event_name != 'pull_request' }}
-          tags: prompteng_run_stage:${{ steps.meta.outputs.tags }}
+          tags: "ghcr.io/sellpath/prompteng_run_stage:${{ github.sha }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
