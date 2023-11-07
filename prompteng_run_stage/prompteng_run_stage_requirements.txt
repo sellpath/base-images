@@ -6,4 +6,4 @@ pytest==7.4.3
 python-dotenv==1.0.0
 qdrant_client==1.5.4
 s3fs==2023.10.0
-sentence_transformers==2.2.2
+# sentence_transformers==2.2.2
