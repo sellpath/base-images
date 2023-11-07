@@ -16,6 +16,7 @@ on:
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
+  NAMESPACE: gosellpath
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
   TAG_NAME: ""
@@ -77,7 +78,7 @@ jobs:
         with:
           context: ./run_stage
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "${{ env.REGISTRY }}/sellpath/python_run_stage:${{ steps.tag_name.outputs.tag }}"
+          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ steps.tag_name.outputs.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -88,7 +89,7 @@ jobs:
         with:
           context: build_stage/
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "${{ env.REGISTRY }}/sellpath/python_build_stage:${{ steps.tag_name.outputs.tag }}"
+          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_build_stage:${{ steps.tag_name.outputs.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -99,7 +100,7 @@ jobs:
         with:
           context: ./prompteng_run_stage
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "${{ env.REGISTRY }}/sellpath/prompteng_run_stage:${{ steps.tag_name.outputs.tag }}"
+          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/prompteng_run_stage:${{ steps.tag_name.outputs.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
