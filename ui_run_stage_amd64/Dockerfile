@@ -2,7 +2,8 @@ FROM node:20.9.0-alpine3.17
 
 # disable ipv6
 COPY workaround-disable-ipv6.txt ./
-RUN cat workaround-disable-ipv6.txt >> /etc/sysctl.d/local.conf
+RUN cat workaround-disable-ipv6.txt >> /etc/sysctl.d/local.conf \
+    && rm workaround-disable-ipv6.txt
 
 # Create the directory on the node image
 # where our Next.js app will live
