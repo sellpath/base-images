@@ -18,3 +18,6 @@ RUN yarn set version berry
 
 # Install dependencies in /app
 RUN yarn install
+
+# Override the ENTRYPOINT of the base image
+ENTRYPOINT []
