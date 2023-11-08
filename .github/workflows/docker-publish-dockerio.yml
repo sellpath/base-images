@@ -7,11 +7,11 @@ name: Docker
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dockerio" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dockerio" ]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -33,8 +33,12 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
@@ -43,12 +47,6 @@ jobs:
         uses: sigstore/cosign-installer@6e04d228eb30da1757ee4e1dd75a0ec73a653e06 #v3.1.1
         with:
           cosign-release: 'v2.1.1'
-
-      # Set up BuildKit Docker container builder to be able to build
-      # multi-platform images and export cache
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -73,9 +71,10 @@ jobs:
       # https://github.com/docker/build-push-action
       - name: run_stage.Dockerfile- Build and push Docker image 
         id: build-and-push-run_stage
-        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+        uses: docker/build-push-action@v5 # v5.0.0
         with:
           context: ./run_stage
+          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ steps.tag_name.outputs.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
@@ -84,9 +83,10 @@ jobs:
 
       - name: build_stage.Dockerfile- Build and push Docker image 
         id: build-and-push-build_stage
-        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+        uses: docker/build-push-action@v5 # v5.0.0
         with:
           context: build_stage/
+          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_build_stage:${{ steps.tag_name.outputs.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
@@ -95,9 +95,10 @@ jobs:
 
       - name: ui_run_stage_amd64.Dockerfile- Build and push Docker image 
         id: build-and-push-ui_run_stage
-        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+        uses: docker/build-push-action@v5 # v5.0.0
         with:
           context: ./ui_run_stage_amd64
+          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/ui_run_stage:${{ steps.tag_name.outputs.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
@@ -106,7 +107,7 @@ jobs:
 
       # - name: ui_run_stage_arm64v8.Dockerfile- Build and push Docker image 
       #   id: build-and-push-ui_run_stage_arm64
-      #   uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+      #   uses: docker/build-push-action@v5 # v5.0.0
       #   with:
       #     context: ./ui_run_stage_arm64v8
       #     push: ${{ github.event_name != 'pull_request' }}
@@ -117,9 +118,10 @@ jobs:
 
       - name: postgres - Build and push Docker image 
         id: build-and-push-postgres
-        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+        uses: docker/build-push-action@v5 # v5.0.0
         with:
           context: ./postgres
+          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/postgres:${{ steps.tag_name.outputs.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
@@ -128,9 +130,10 @@ jobs:
   
       - name: prompteng_run_stage.Dockerfile- Build and push Docker image 
         id: build-and-push-prompteng_run_stage
-        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+        uses: docker/build-push-action@v5 # v5.0.0
         with:
           context: ./prompteng_run_stage
+          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/prompteng_run_stage:${{ steps.tag_name.outputs.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
