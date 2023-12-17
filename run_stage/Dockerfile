@@ -1,5 +1,5 @@
 # Python 'run' stage
-FROM python:3.11.5-slim-bullseye  as python-run-stage
+FROM python:3.11.7-slim-bullseye  as python-run-stage
 
 ARG BUILD_ENVIRONMENT=local
 ARG APP_HOME=/app
