@@ -1,5 +1,5 @@
 # Python 'run' stage
-FROM python:3.11.5-slim-bullseye  as python-run-stage
+FROM python:3.11.7-slim-bullseye  as python-run-stage
 
 ARG BUILD_ENVIRONMENT=local
 ARG APP_HOME=/app
@@ -30,3 +30,5 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --upgrade pip
