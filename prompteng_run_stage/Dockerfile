@@ -11,9 +11,11 @@ ENV BUILD_ENV ${BUILD_ENVIRONMENT}
 
 WORKDIR ${APP_HOME}
 
-# devcontainer dependencies and utils
+# dependencies and utils
 RUN apt-get update && apt-get install --no-install-recommends -y \
-  sudo git bash-completion ssh curl vim iputils-ping sudo build-essential libpq5
+  sudo git bash-completion ssh curl vim iputils-ping build-essential libpq5 libpq-dev gettext python3.11-dev \
+  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+  && rm -rf /var/lib/apt/lists/*
 
 # Create devcontainer user and add it to sudoers
 RUN  groupadd -g 999 docker && groupadd -g 1000 dev-user \
@@ -23,21 +25,5 @@ RUN  groupadd -g 999 docker && groupadd -g 1000 dev-user \
   && echo dev-user:docker | chpasswd \
   && usermod -aG docker dev-user
 
-# Install required system dependencies
-RUN apt-get update && apt-get install --no-install-recommends -y \
-  # psycopg2 dependencies
-  libpq-dev \
-  # Translations dependencies
-  gettext \
-  python3.11-dev \
-  # cleaning up unused files
-  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-  && rm -rf /var/lib/apt/lists/*
-
 RUN pip install --upgrade pip
-# PromptEng specific requirements are too large to export and import again
-# just install and use
-COPY prompteng_run_stage_requirements.txt ./requirements.txt
 
-RUN pip install -r requirements.txt
-RUN rm requirements.txt
