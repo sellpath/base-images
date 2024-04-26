@@ -13,7 +13,7 @@ WORKDIR ${APP_HOME}
 
 # dependencies and utils
 RUN apt-get update && apt-get install --no-install-recommends -y \
-  sudo git bash-completion ssh curl vim iputils-ping build-essential libpq5 libpq-dev gettext python3.11-dev \
+  sudo git bash-completion openssh-client curl vim iputils-ping build-essential libpq5 libpq-dev gettext python3.11-dev \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
 
