@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
 
+RUN pip install --upgrade pip
 # PromptEng specific requirements are too large to export and import again
 # just install and use
 COPY prompteng_run_stage_requirements.txt ./requirements.txt
