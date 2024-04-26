@@ -1,5 +1,5 @@
 # Python 'run' stage
-FROM python:3.11.5-slim-bullseye  as python-run-stage
+FROM python:3.11.9-slim-bookworm  as python-run-stage
 
 ARG BUILD_ENVIRONMENT=local
 ARG APP_HOME=/app
@@ -13,13 +13,15 @@ WORKDIR ${APP_HOME}
 
 # devcontainer dependencies and utils
 RUN apt-get update && apt-get install --no-install-recommends -y \
-  sudo git bash-completion ssh curl vim iputils-ping
+  sudo git bash-completion ssh curl vim iputils-ping sudo build-essential libpq5
 
 # Create devcontainer user and add it to sudoers
-RUN groupadd --gid 1000 dev-user \
+RUN  groupadd -g 999 docker && groupadd -g 1000 dev-user \
   && useradd --uid 1000 --gid dev-user --shell /bin/bash --create-home dev-user \
   && echo dev-user ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/dev-user \
-  && chmod 0440 /etc/sudoers.d/dev-user
+  && chmod 0440 /etc/sudoers.d/dev-user \
+  && echo dev-user:docker | chpasswd \
+  && usermod -aG docker dev-user 
 
 # Install required system dependencies
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -27,6 +29,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   libpq-dev \
   # Translations dependencies
   gettext \
+  python3.11-dev \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*

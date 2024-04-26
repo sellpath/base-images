@@ -1,7 +1,7 @@
 #!/bin/bash -xe
 
 # Define variables
-TAG_NAME="2023110602"
+TAG_NAME="2024042601"
 DOCKER_USERNAME="$DOCKER_USER" # Read from environment variable
 DOCKER_PASSWORD="$DOCKER_PASS" #
 DOCKER_REPO="gosellpath"
