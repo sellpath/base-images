@@ -9,7 +9,7 @@ on:
   push:
     branches: [ "dockerio" ]
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    # tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ "dockerio" ]
 
@@ -127,16 +127,3 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-  
-      - name: prompteng_run_stage.Dockerfile- Build and push Docker image 
-        id: build-and-push-prompteng_run_stage
-        uses: docker/build-push-action@v5 # v5.0.0
-        with:
-          context: ./prompteng_run_stage
-          platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/prompteng_run_stage:${{ steps.tag_name.outputs.tag }}"
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-  

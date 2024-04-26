@@ -1,5 +1,4 @@
-# Python build stage
-FROM python:3.11.7-slim-bullseye as python-build-stage
+FROM python:3.11.9-slim-bookworm as python-build-stage
 
 ARG BUILD_ENVIRONMENT=local
 ARG APP_SRC=./prompteng
