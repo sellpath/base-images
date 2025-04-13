@@ -1,4 +1,4 @@
-FROM node:20.12.2-alpine3.19
+FROM node:20.19.0-alpine3.20
 
 # disable ipv6
 COPY workaround-disable-ipv6.txt ./

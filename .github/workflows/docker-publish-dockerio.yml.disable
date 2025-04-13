@@ -62,9 +62,9 @@ jobs:
         id: tag_name
         run: |
           if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            echo "::set-output name=tag::${GITHUB_REF/refs\/tags\//}"
+            echo "tag=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
           else
-            echo "::set-output name=tag::$(echo "${{ github.sha }}" | cut -c1-8)"
+            echo "tag=$(echo "${{ github.sha }}" | cut -c1-8)" >> $GITHUB_ENV
           fi
 
       # Build and push Docker image with Buildx (don't push on PR)
@@ -76,7 +76,7 @@ jobs:
           context: ./run_stage
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ steps.tag_name.outputs.tag }}"
+          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ env.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -88,7 +88,7 @@ jobs:
           context: build_stage/
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_build_stage:${{ steps.tag_name.outputs.tag }}"
+          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ env.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -100,7 +100,7 @@ jobs:
           context: ./ui_run_stage
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/ui_run_stage:${{ steps.tag_name.outputs.tag }}"
+          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ env.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -111,7 +111,7 @@ jobs:
       #   with:
       #     context: ./ui_run_stage_arm64v8
       #     push: ${{ github.event_name != 'pull_request' }}
-      #     tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/ui_run_stage_arm64v8:${{ steps.tag_name.outputs.tag }}"
+      #     tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ env.tag }}"
       #     labels: ${{ steps.meta.outputs.labels }}
       #     cache-from: type=gha
       #     cache-to: type=gha,mode=max
@@ -123,7 +123,7 @@ jobs:
           context: ./postgres
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/postgres:${{ steps.tag_name.outputs.tag }}"
+          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ env.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
