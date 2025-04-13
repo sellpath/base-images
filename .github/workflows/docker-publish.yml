@@ -88,7 +88,7 @@ jobs:
           context: build_stage/
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ env.tag }}"
+          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_build_stage:${{ env.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -100,7 +100,7 @@ jobs:
           context: ui_run_stage/
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ env.tag }}"
+          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/ui_run_stage:${{ env.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -111,7 +111,7 @@ jobs:
       #   with:
       #     context: ./ui_run_stage_arm64v8
       #     push: ${{ github.event_name != 'pull_request' }}
-      #     tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ env.tag }}"
+      #     tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/ui_run_stage_arm64v8:${{ env.tag }}"
       #     labels: ${{ steps.meta.outputs.labels }}
       #     cache-from: type=gha
       #     cache-to: type=gha,mode=max
@@ -123,7 +123,7 @@ jobs:
           context: postgres/
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ env.tag }}"
+          tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/postgres:${{ env.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
