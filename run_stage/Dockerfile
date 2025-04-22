@@ -8,6 +8,7 @@ ARG APP_SRC=./app-src
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV BUILD_ENV=${BUILD_ENVIRONMENT}
+ENV PATH="/usr/local/bin:$PATH"
 
 WORKDIR ${APP_HOME}
 
@@ -40,4 +41,4 @@ RUN groupadd -g 1000 dev-user \
   && groupadd -g 1001 docker \
   && usermod -aG docker dev-user 
 
-RUN pip install --upgrade pip
+RUN /usr/local/bin/python -m pip install --upgrade pip setuptools wheel
