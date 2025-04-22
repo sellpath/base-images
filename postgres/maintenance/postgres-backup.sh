@@ -30,6 +30,21 @@ export PGDATABASE="${POSTGRES_DB}"
 
 # Set backup directory, defaulting to /backups
 export BACKUP_DIR="${POSTGRES_BACKUP_DIR:-/backups}"
+# Function to display help message
+# Function to display help message
+show_help() {
+    message_info "Usage: $0 <database_name|all> [<backup_file_path>]"
+    echo
+    echo "Arguments:"
+    echo "  database_name      Name of the database to back up. Use 'all' to back up all databases."
+    echo "  backup_file_path   (Optional) Path to the destination file where the backup will be saved (.sql.xz). If not provided, a default filename will be generated. BACKUP_DIR/DB_NAME_datetime.sql.xz"
+    echo
+    echo "Examples:"
+    echo "  $0 all /path/to/backupfile.sql.xz      Back up all databases to the specified file."
+    echo "  $0 my_database /path/to/backupfile.sql.xz   Back up 'my_database' to the specified file."
+    echo
+    exit 1
+}
 
 # Function to back up a single database
 backup_single_database() {
@@ -61,14 +76,6 @@ if [[ $# -ge 1 ]]; then
         backup_single_database "$DB_NAME" "$BACKUP_FILE"
     fi
 else
-    # Default behavior: Backup each database individually and all databases
-    message_info "No parameters provided. Backing up each database individually and all databases."
-    
-    DB_LIST=$(PGPASSWORD="$PGPASSWORD" psql -U "$PGUSER" -h "$PGHOST" -p "$PGPORT" -d postgres -t -c "SELECT datname FROM pg_database WHERE datistemplate = false AND datallowconn = true;")
-    
-    for DB in $DB_LIST; do
-        backup_single_database "$DB"
-    done
-    
-    backup_all_databases
+    message_info "Error: No parameters provided."
+    show_help
 fi
