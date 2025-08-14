@@ -7,4 +7,5 @@ COPY base_image_version.txt /base_image_version.txt
 # Install apt packages
 RUN apt-get update && apt-get install --no-install-recommends -y \
   # dependencies for building Python packages
-  build-essential
+  build-essential \
+  && rm -rf /var/lib/apt/lists/*

@@ -83,7 +83,7 @@ jobs:
       - name: Copy base_image_version.txt to all build contexts
         run: |
           for dir in postgres run_stage build_stage ui_run_stage; do
-            cp base_image_version.txt "$dir/base_image_version.txt"
+            cp -f base_image_version.txt "$dir/base_image_version.txt"
           done
   
       # Build and push Docker image with Buildx (don't push on PR)
@@ -100,21 +100,11 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Wait for python_run_stage image to be available in registry
-        run: |
-          for i in {1..10}; do
-            if docker manifest inspect ghcr.io/sellpath/python_run_stage:${{ env.tag }}; then
-              echo "Image found in registry."
-              break
-            fi
-            echo "Waiting for image to be available in registry..."
-            sleep 6
-          done
-
       - name: Scan python_run_stage image for vulnerabilities with Trivy
+        if: github.event_name != 'pull_request'
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/sellpath/python_run_stage:${{ env.tag }}
+          image-ref: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ env.tag }}"
           format: table
           exit-code: 1
           severity: HIGH,CRITICAL
@@ -131,24 +121,15 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Wait for python_build_stage image to be available in registry
-        run: |
-          for i in {1..10}; do
-            if docker manifest inspect ghcr.io/sellpath/python_build_stage:${{ env.tag }}; then
-              echo "Image found in registry."
-              break
-            fi
-            echo "Waiting for image to be available in registry..."
-            sleep 6
-          done
-
       - name: Scan python_build_stage image for vulnerabilities with Trivy
+        if: github.event_name != 'pull_request'
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/sellpath/python_build_stage:${{ env.tag }}
+          image-ref: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_build_stage:${{ env.tag }}"
           format: table
           exit-code: 1
           severity: HIGH,CRITICAL
+
 
       - name: ui_run_stage.Dockerfile - Build and push Docker image 
         id: build-and-push-ui_run_stage
@@ -162,21 +143,11 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Wait for ui_run_stage image to be available in registry
-        run: |
-          for i in {1..10}; do
-            if docker manifest inspect ghcr.io/sellpath/ui_run_stage:${{ env.tag }}; then
-              echo "Image found in registry."
-              break
-            fi
-            echo "Waiting for image to be available in registry..."
-            sleep 6
-          done
-
       - name: Scan ui_run_stage image for vulnerabilities with Trivy
+        if: github.event_name != 'pull_request'
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/sellpath/ui_run_stage:${{ env.tag }}
+          image-ref: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/ui_run_stage:${{ env.tag }}"
           format: table
           exit-code: 1
           severity: HIGH,CRITICAL
@@ -204,21 +175,11 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Wait for postgres image to be available in registry
-        run: |
-          for i in {1..10}; do
-            if docker manifest inspect ghcr.io/sellpath/postgres:${{ env.tag }}; then
-              echo "Image found in registry."
-              break
-            fi
-            echo "Waiting for image to be available in registry..."
-            sleep 6
-          done
-
       - name: Scan postgres image for vulnerabilities with Trivy
+        if: github.event_name != 'pull_request'
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/sellpath/postgres:${{ env.tag }}
+          image-ref: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/postgres:${{ env.tag }}"
           format: table
           exit-code: 1
           severity: HIGH,CRITICAL
