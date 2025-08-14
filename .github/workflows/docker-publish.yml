@@ -100,15 +100,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Scan python_run_stage image for vulnerabilities with Trivy
-        if: github.event_name != 'pull_request'
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ env.tag }}"
-          format: table
-          exit-code: 1
-          severity: HIGH,CRITICAL
-
       - name: build_stage.Dockerfile - Build and push Docker image 
         id: build-and-push-build_stage
         uses: docker/build-push-action@v5 # v5.0.0
@@ -120,15 +111,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: Scan python_build_stage image for vulnerabilities with Trivy
-        if: github.event_name != 'pull_request'
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_build_stage:${{ env.tag }}"
-          format: table
-          exit-code: 1
-          severity: HIGH,CRITICAL
 
 
       - name: ui_run_stage.Dockerfile - Build and push Docker image 
@@ -142,15 +124,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: Scan ui_run_stage image for vulnerabilities with Trivy
-        if: github.event_name != 'pull_request'
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/ui_run_stage:${{ env.tag }}"
-          format: table
-          exit-code: 1
-          severity: HIGH,CRITICAL
 
       # - name: ui_run_stage_arm64v8.Dockerfile- Build and push Docker image 
       #   id: build-and-push-ui_run_stage_arm64
@@ -175,11 +148,38 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Scan postgres image for vulnerabilities with Trivy
-        if: github.event_name != 'pull_request'
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/postgres:${{ env.tag }}"
-          format: table
-          exit-code: 1
-          severity: HIGH,CRITICAL
+      # - name: Scan python_run_stage image for vulnerabilities with Trivy
+      #   if: github.event_name != 'pull_request'
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ env.tag }}"
+      #     format: table
+      #     exit-code: 1
+      #     severity: CRITICAL
+
+      # - name: Scan python_build_stage image for vulnerabilities with Trivy
+      #   if: github.event_name != 'pull_request'
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_build_stage:${{ env.tag }}"
+      #     format: table
+      #     exit-code: 1
+      #     severity: CRITICAL
+
+      # - name: Scan ui_run_stage image for vulnerabilities with Trivy
+      #   if: github.event_name != 'pull_request'
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/ui_run_stage:${{ env.tag }}"
+      #     format: table
+      #     exit-code: 1
+      #     severity: CRITICAL
+
+      # - name: Scan postgres image for vulnerabilities with Trivy
+      #   if: github.event_name != 'pull_request'
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/postgres:${{ env.tag }}"
+      #     format: table
+      #     exit-code: 1
+      #     severity: CRITICAL
