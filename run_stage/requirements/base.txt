@@ -1,0 +1,53 @@
+# Common base requirements for backend, sessionmgr, and taskmgr
+
+# gRPC
+grpcio==1.67.1
+grpcio-tools==1.67.1
+
+# Logging
+loguru==0.7.2
+
+# Redis
+redis[hiredis]==5.0.1
+
+# ORM / DB
+SQLAlchemy==2.0.26
+psycopg==3.2.9
+psycopg-c==3.2.9
+psycopg2==2.9.10
+
+# PyOgg (from git)
+PyOgg @ git+https://github.com/TeamPyOgg/PyOgg
+
+# Sound
+soundfile==0.12.1
+
+# Twilio (use the pinned version for compatibility)
+twilio==9.6.3
+
+# FastAPI
+fastapi==0.115.11
+
+# Opus
+opuslib==3.0.1
+
+# Pydub
+pydub==0.25.1
+
+# Pytest
+pytest==7.4.3
+
+# Uvicorn (use the pinned version for compatibility)
+uvicorn[standard]==0.30.6
+
+# Pydantic (use the pinned version for compatibility)
+pydantic==2.11.5
+
+# Celery (updated to latest compatible version for all containers)
+celery==5.5.3
+
+# Supertokens (use the version with extras for compatibility)
+supertokens-python==0.29.1
+
+# Boto3
+boto3==1.37.3

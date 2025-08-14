@@ -1,0 +1,57 @@
+# Django
+# ------------------------------------------------------------------------------
+9  # pyup: < 5.0  # https://www.djangoproject.com/
+argon2-cffi==23.1.0  # https://github.com/hynek/argon2_cffi
+
+# Azure
+# ------------------------------------------------------------------------------
+azure-storage-blob==12.25.1  # https://github.com/Azure/azure-sdk-for-python
+
+# boto3 s3
+boto3==1.37.3
+
+# cerery 
+celery==5.5.3  # pyup: < 6.0  # https://github.com/celery/celery
+crispy-bootstrap5==0.7  # https://github.com/django-crispy-forms/crispy-bootstrap5
+
+# encryption of app_integrations_default.json
+# cryptography==41.0.5
+cryptography==45.0.6
+django-allauth==0.56.1  # https://github.com/pennersr/django-allauth
+django-celery-beat==2.5.0  # https://github.com/celery/django-celery-beat
+django-cors-headers==4.7.0  # https://github.com/adamchainz/django-cors-headers
+django-crispy-forms==2.4  # https://github.com/django-crispy-forms/django-crispy-forms
+django-environ==0.11.2  # https://github.com/joke2k/django-environ
+django-model-utils==5.0.0  # https://github.com/jazzband/django-model-utils
+django-redis==6.0.0  # https://github.com/jazzband/django-redis
+# Django REST Framework
+djangorestframework==3.14.0  # https://github.com/encode/django-rest-framework
+# DRF-spectacular for api documentation
+drf-spectacular==0.27.2  # https://github.com/tfranzel/drf-spectacular
+flower==2.0.1  # https://github.com/mher/flower
+
+#gRPC
+grpcio==1.67.1
+grpcio-tools==1.67.1
+hiredis==3.2.1  # https://github.com/redis/hiredis-py
+
+# log
+loguru==0.7.2 #https://github.com/Delgan/loguru
+Pillow==11.3.0  # https://github.com/python-pillow/Pillow
+
+# schema 
+pydantic==2.11.5
+
+# log
+python-json-logger>=3.3.0
+python-slugify==8.0.4  # https://github.com/un33k/python-slugify
+redis[hiredis]==5.0.1
+
+# Supertokens for auth
+supertokens-python[django, drf]==0.29.1
+uvicorn[standard]==0.30.6  # https://github.com/encode/uvicorn
+
+whitenoise==6.9.0
+
+# gmail module
+yagmail==0.15.293
