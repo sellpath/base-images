@@ -101,7 +101,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Scan python_run_stage image for vulnerabilities with Trivy
-        uses: aquasecurity/trivy-action@v0.16.0
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: ghcr.io/sellpath/python_run_stage:${{ env.tag }}
           format: table
@@ -121,7 +121,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Scan python_build_stage image for vulnerabilities with Trivy
-        uses: aquasecurity/trivy-action@v0.16.0
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: ghcr.io/sellpath/python_build_stage:${{ env.tag }}
           format: table
@@ -141,7 +141,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Scan ui_run_stage image for vulnerabilities with Trivy
-        uses: aquasecurity/trivy-action@v0.16.0
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: ghcr.io/sellpath/ui_run_stage:${{ env.tag }}
           format: table
@@ -172,7 +172,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Scan postgres image for vulnerabilities with Trivy
-        uses: aquasecurity/trivy-action@v0.16.0
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: ghcr.io/sellpath/postgres:${{ env.tag }}
           format: table
