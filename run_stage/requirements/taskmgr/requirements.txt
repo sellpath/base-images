@@ -37,7 +37,7 @@ prefect==3.4.6            # update griffe version also
 prefect-aws==0.5.10
 psycopg==3.2.9
 psycopg-c==3.2.9
-psycopg2==2.9.10
+psycopg2-binary==2.9.10
 pydantic==2.11.5
 pydub==0.25.1
 #pyogg https://github.com/TeamPyOgg/PyOgg/issues/109 FIXME when this issue is resolved

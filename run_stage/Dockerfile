@@ -43,4 +43,4 @@ RUN groupadd -g 1000 dev-user \
 
 RUN /usr/local/bin/python -m pip install --upgrade pip setuptools wheel
 COPY requirements/base.txt /tmp/base.txt
-RUN /usr/local/bin/python -m pip install -r /tmp/base.txt && rm -f /tmp/base.txt 
+RUN /usr/local/bin/python -m pip install -r /tmp/base.txt && rm -f /tmp/base.txt
