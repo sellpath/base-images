@@ -1,4 +1,4 @@
-FROM postgres:17.6-bookworm
+FROM postgres:17.5-bookworm
 
 # Install dependencies and pgvector extension
 RUN apt-get update && apt-get install -y \
