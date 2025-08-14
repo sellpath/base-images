@@ -82,6 +82,20 @@ To run a built image and access its shell:
 docker run -it --rm <image-name>:local bash
 ```
 
+### Scan a Docker image 
+To scan a Docker image for CRITICAL vulnerabilities locally using Trivy (matching your GitHub Actions workflow), run the following command:
+
+```bash
+trivy image --severity CRITICAL --exit-code 1 --format table <image-name>
+```
+
+Replace `<image-name>` with the name of your built image, for example:
+```bash
+trivy image --severity CRITICAL --exit-code 1 --format table sellpath_local_python_run_stage:latest-us141
+```
+
+This will display a table of CRITICAL vulnerabilities and exit with code 1 if any are found. You can use this approach for any locally built image.
+
 ### Notes
 
 - The above commands match the build contexts and platforms used in the GitHub workflow (.github/workflows/docker-publish.yml).
