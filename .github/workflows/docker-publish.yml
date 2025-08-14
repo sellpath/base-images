@@ -93,12 +93,23 @@ jobs:
         uses: docker/build-push-action@v5 # v5.0.0
         with:
           context: run_stage/
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_run_stage:${{ env.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Wait for python_run_stage image to be available in registry
+        run: |
+          for i in {1..10}; do
+            if docker manifest inspect ghcr.io/sellpath/python_run_stage:${{ env.tag }}; then
+              echo "Image found in registry."
+              break
+            fi
+            echo "Waiting for image to be available in registry..."
+            sleep 6
+          done
 
       - name: Scan python_run_stage image for vulnerabilities with Trivy
         uses: aquasecurity/trivy-action@master
@@ -113,12 +124,23 @@ jobs:
         uses: docker/build-push-action@v5 # v5.0.0
         with:
           context: build_stage/
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/python_build_stage:${{ env.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Wait for python_build_stage image to be available in registry
+        run: |
+          for i in {1..10}; do
+            if docker manifest inspect ghcr.io/sellpath/python_build_stage:${{ env.tag }}; then
+              echo "Image found in registry."
+              break
+            fi
+            echo "Waiting for image to be available in registry..."
+            sleep 6
+          done
 
       - name: Scan python_build_stage image for vulnerabilities with Trivy
         uses: aquasecurity/trivy-action@master
@@ -133,12 +155,23 @@ jobs:
         uses: docker/build-push-action@v5 # v5.0.0
         with:
           context: ui_run_stage/
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/ui_run_stage:${{ env.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Wait for ui_run_stage image to be available in registry
+        run: |
+          for i in {1..10}; do
+            if docker manifest inspect ghcr.io/sellpath/ui_run_stage:${{ env.tag }}; then
+              echo "Image found in registry."
+              break
+            fi
+            echo "Waiting for image to be available in registry..."
+            sleep 6
+          done
 
       - name: Scan ui_run_stage image for vulnerabilities with Trivy
         uses: aquasecurity/trivy-action@master
@@ -164,12 +197,23 @@ jobs:
         uses: docker/build-push-action@v5 # v5.0.0
         with:
           context: postgres/
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags: "${{ env.REGISTRY }}/${{ env.NAMESPACE }}/postgres:${{ env.tag }}"
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Wait for postgres image to be available in registry
+        run: |
+          for i in {1..10}; do
+            if docker manifest inspect ghcr.io/sellpath/postgres:${{ env.tag }}; then
+              echo "Image found in registry."
+              break
+            fi
+            echo "Waiting for image to be available in registry..."
+            sleep 6
+          done
 
       - name: Scan postgres image for vulnerabilities with Trivy
         uses: aquasecurity/trivy-action@master
