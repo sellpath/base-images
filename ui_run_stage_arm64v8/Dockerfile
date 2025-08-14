@@ -1,4 +1,4 @@
-FROM arm64v8/node:20.9.0-alpine3.17
+FROM arm64v8/node:22.18.0-alpine3.22
 
 # Create the directory on the node image
 # where our Next.js app will live

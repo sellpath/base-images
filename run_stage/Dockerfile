@@ -1,5 +1,5 @@
 # Python 'run' stage
-FROM python:3.11.12-slim-bookworm  AS python-run-stage
+FROM python:3.11.13-slim-bookworm  AS python-run-stage
 
 ARG BUILD_ENVIRONMENT=local
 ARG APP_HOME=/app
@@ -8,8 +8,11 @@ ARG APP_SRC=./app-src
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV BUILD_ENV=${BUILD_ENVIRONMENT}
+ENV PATH="/usr/local/bin:$PATH"
 
 WORKDIR ${APP_HOME}
+
+COPY base_image_version.txt /base_image_version.txt
 
 # dependencies and utils
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -40,4 +43,6 @@ RUN groupadd -g 1000 dev-user \
   && groupadd -g 1001 docker \
   && usermod -aG docker dev-user 
 
-RUN pip install --upgrade pip
+RUN /usr/local/bin/python -m pip install --upgrade pip setuptools wheel
+COPY requirements/base.txt /tmp/base.txt
+RUN /usr/local/bin/python -m pip install -r /tmp/base.txt && rm -f /tmp/base.txt && rm -rf /root/.cache/pip

@@ -1,0 +1,61 @@
+# aiortc==1.13.0
+aiortc @ git+https://github.com/sellpath/aiortc
+# -e /home/dev-user/repo/aiortc/
+asyncio==4.0.0
+# av==12.1.0
+dataclasses-json==0.6.7
+dspy-ai[qdrant]==2.6.16
+environs==14.2.0
+fastapi==0.115.11
+fastapi_plugins==0.13.0
+# faster_whisper @ git+https://github.com/sellpath/faster-whisper.git
+ffmpeg==1.4
+# ffprobe==0.5
+grpcio==1.67.1
+grpcio-tools==1.67.1
+litellm==1.74.3 # @ git+https://github.com/sellpath/litellm.git
+loguru==0.7.2
+# nltk==3.8.1
+numpy==1.26.4
+# torchaudio==2.4.0
+# torchvision==0.19.0
+# transformers==4.44.2 # @ git+https://github.com/sellpath/transformers.git
+# websockets==12.1 # necessary for sessionmgr peer client
+# websockets @ git+https://github.com/python-websockets/websockets.git@a78b5546074ed9e89a265eec1b54292a628d9b25
+opuslib==3.0.1
+# opencv-python==4.10.0.84 # 2.1.0
+prometheus-client==0.21.1
+
+## monitoring
+prometheus_client==0.21.1
+# parler_tts @ git+https://github.com/sellpath/parler-tts.git
+psycopg==3.2.9
+psycopg-c==3.2.9
+psycopg2-binary==2.9.10 
+pydantic==2.11.5
+pydub==0.25.1
+# pyee>=11.1.1
+pyinstrument==4.7.3
+
+#pyogg https://github.com/TeamPyOgg/PyOgg/issues/109 FIXME when this issue is resolved
+PyOgg @ git+https://github.com/TeamPyOgg/PyOgg
+# pyloudnorm==0.1.1
+pytest==7.4.3  # https://github.com/pytest-dev/pytest
+pytest-asyncio==0.23.7
+python-multipart==0.0.20
+# pywav==1.1
+redis[hiredis]==5.0.1
+requests==2.31.0
+resampy==0.4.3
+scipy==1.13.1
+# flash-attn==2.6.3 #move to start.sh as it fail while build
+soundfile==0.12.1
+# silero-vad==5.1
+#0.1.4
+SQLAlchemy==2.0.26
+sse_starlette==2.0.0
+supertokens-python==0.29.1
+
+twilio==9.6.3
+uvicorn[standard]==0.30.6  # https://github.com/encode/uvicorn
+# websockets==15.0.1
