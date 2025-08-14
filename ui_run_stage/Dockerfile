@@ -12,6 +12,8 @@ RUN mkdir -p /app
 # Set /app as the working directory in container
 WORKDIR /app
 
+COPY base_image_version.txt /base_image_version.txt
+
 RUN yarn set version berry
 
 # Override the ENTRYPOINT of the base image

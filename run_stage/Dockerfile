@@ -12,6 +12,8 @@ ENV PATH="/usr/local/bin:$PATH"
 
 WORKDIR ${APP_HOME}
 
+COPY base_image_version.txt /base_image_version.txt
+
 # dependencies and utils
 RUN apt-get update && apt-get install --no-install-recommends -y \
   sudo git bash-completion openssh-client curl \
